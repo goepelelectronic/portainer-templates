@@ -1,0 +1,35 @@
+{
+  "version": "3",
+  "templates": [
+    {
+      "id": 1,
+      "type": 3,
+      "title": "AI - Trainer",
+      "name": "ai-trainer",
+      "description": "UI and backend for the AI Trainer services",
+      "repository": {
+        "url": "https://github.com/goepelelectronic/portainer-templates",
+        "stackfile": "ai-trainer-compose.yml"
+      },
+      "platform": "linux",
+      "categories": ["AI - Trainer", "AI", "Inspection systems"],
+      "env": [
+        {
+          "name": "PATH_TO_IMAGES",
+          "label": "Path to the images on the host",
+          "default": "/mnt/d/ai_trainer/images"
+        },
+        {
+          "name": "PATH_TO_MODELS",
+          "label": "Path to the models on the host",
+          "default": "/mnt/d/ai_trainer/models"
+        },
+        {
+          "name": "VERSION",
+          "label": "The version to install",
+          "default": "v1.0.0"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+services:
+  trainer:
+    image: docker.goepel.com/aiadvisor/aitrainer-service:${VERSION}
+    container_name: trainer
+    volumes:      
+      - ${PATH_TO_IMAGES}:/images
+      - ${PATH_TO_MODELS}:/models
+    environment:
+      VERSION: latest
+    networks:
+      - trainer-net
+
+  prediction:
+    image: docker.goepel.com/aiadvisor/tf_serving_cached_net:${VERSION}
+    container_name: prediction
+    volumes:
+      - ${PATH_TO_MODELS}:/models
+    networks:
+      - trainer-net
+    ports:
+      - "8510:8510"
+    command:            
+      --modeldir=/models
+      --maxCacheCount=100
+    environment:
+      - VERSION=latest      
+
+  ui:
+    image: docker.goepel.com/aiadvisor/aitrainer-ui:${VERSION}
+    container_name: ui
+    volumes:
+      - ${PATH_TO_IMAGES}:/storage/images
+      - ${PATH_TO_MODELS}:/storage/models
+    networks:
+      - trainer-net
+    ports:
+      - "5000:5000"
+      - "443:443"
+    depends_on:
+      - trainer
+      - prediction
+
+networks:
+  trainer-net:
+    name: trainer-net
+    driver: bridge
