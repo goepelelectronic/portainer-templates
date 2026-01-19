@@ -9,6 +9,7 @@ services:
       VERSION: latest
     networks:
       - trainer-net
+    restart: unless-stopped
 
   prediction:
     image: docker.goepel.com/aiadvisor/tf_serving_cached_net:${VERSION}
@@ -23,7 +24,8 @@ services:
       --modeldir=/models
       --maxCacheCount=100
     environment:
-      - VERSION=latest      
+      - VERSION=latest
+    restart: unless-stopped
 
   ui:
     image: docker.goepel.com/aiadvisor/aitrainer-ui:${VERSION}
@@ -39,6 +41,7 @@ services:
     depends_on:
       - trainer
       - prediction
+    restart: unless-stopped
 
 networks:
   trainer-net:
